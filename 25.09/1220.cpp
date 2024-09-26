@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include <map>
 
 using std::cout;
@@ -27,7 +28,8 @@ int main(){
 	}else{
 			cout<<"Not found";
 	}*/
-	std::map<std::string,int> fregs;
+	std::unordered_map<std::string,int> fregs;
+	fregs.reserve(3000000);
 	std::string word;
 	while(cin>>word){
 		++fregs[word];
