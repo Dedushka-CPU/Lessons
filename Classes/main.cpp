@@ -2,6 +2,7 @@
 #include "time.h"
 
 using std::cout;
+using std::cin;
 
 /*bool IsAftermonTime(const chron::Time& time){
 	return time.GetHours()>=12;
@@ -26,23 +27,28 @@ int main(){
 	cout<<t3.GetHours()<<":"<<t3.GetMinutes()<<":"<<t3.GetSeconds()<<"\n";
 	cout<<t4.GetHours()<<":"<<t4.GetMinutes()<<":"<<t4.GetSeconds()<<"\n";*/
 	
-	chron::Time t;
-	chron::Time t1(9999999);
+	/*chron::Time t;
+	chron::Time t1(9999999);*/
 	//cout<<t1.GetHours()<<":"<<t1.GetMinutes()<<":"<<t1.GetSeconds()<<"\n";
 	//cout<<t.GetHours()<<":"<<t.GetMinutes()<<":"<<t.GetSeconds()<<"\n";
-	t1.AddSeconds(-56);
-	t=+5;
+	/*t1.AddSeconds(-56);
+	t=+5;*/
 	//cout<<t.GetHours()<<":"<<t.GetMinutes()<<":"<<t.GetSeconds()<<"\n";
 	//cout<<t1.GetHours()<<":"<<t1.GetMinutes()<<":"<<t1.GetSeconds()<<"\n";
 	
-	cout<<t<<"\n"<<t1<<"\n";
-	while(1){
+	//cout<<t<<"\n"<<t1<<"\n";
+	/*while(1){
 		for(int i=0;i<195000000;i++){
 			
 		}
 		cout<<t<<"\n";
 		t.AddSeconds(1);
-	}
+	}*/
+	chron::Time t(1,5,9);
+	chron::Time t1;
+	cin>>t1;
+	cout<<t<<"\n";
+	cout<<t1<<"\n";
 	return 0;
 	
 
