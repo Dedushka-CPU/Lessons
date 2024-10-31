@@ -5,22 +5,22 @@
 
 using std::cout;
 
-class Shape {
+class Shape {//просто фигура
 public:
     virtual ~Shape() { cout << "Shape deleted\n"; }
-    virtual void Draw() const = 0; 
+    virtual void Draw() const = 0;
 };
 
-class Polygon : public Shape {
+class Polygon : public Shape {//многоугольник
 protected:
     int numSides;
 
 public:
     Polygon(int sides) : numSides(sides) {}
-    virtual void Draw() const override = 0; 
+    virtual void Draw() const override = 0;
 };
 
-class Triangle : public Polygon {
+class Triangle : public Polygon {//треугольник
 protected:
     std::array<double, 3> angles;
 
@@ -44,7 +44,7 @@ public:
     }
 };
 
-class Square : public Polygon {
+class Square : public Polygon {//квадрат
 protected:
     int sideLength;
 
@@ -56,7 +56,7 @@ public:
     }
 };
 
-class Rectangle : public Polygon {
+class Rectangle : public Polygon {//прямоугольник
 protected:
     int width;
     int height;
@@ -69,7 +69,7 @@ public:
     }
 };
 
-class Pentagon : public Polygon {
+class Pentagon : public Polygon {//пятиугольник
 protected:
     int sideLength;
 
@@ -82,7 +82,7 @@ public:
     }
 };
 
-class Hexagon : public Polygon {
+class Hexagon : public Polygon {//шестиугольник
 protected:
     int sideLength;
 
@@ -95,7 +95,7 @@ public:
     }
 };
 
-class Ellipse : public Shape {
+class Ellipse : public Shape {//эллипс
 protected:
     int posX;
     int posY;
@@ -110,7 +110,7 @@ public:
     }
 };
 
-class Circle : public Ellipse {
+class Circle : public Ellipse {//круг
 public:
     Circle(int x, int y, int r) : Ellipse(x, y, r, r) {}
 
@@ -119,12 +119,12 @@ public:
     }
 };
 
-class Oval : public Ellipse {
+class Oval : public Ellipse {//овал
 protected:
     int minorRadius;
 
 public:
-    Oval(int x, int y, int major, int minor) : Ellipse(x, y, major, major), minorRadius(minor) {}
+        Oval(int x, int y, int big_r, int small_r) : Ellipse(x, y, big_r, small_r), minorRadius(small_r) {}
 
     void Draw() const override {
         cout << "Овал с центром в (" << posX << ", " << posY << ") и радиусами: " << radiusX << " и " << minorRadius << "\n";
@@ -150,7 +150,6 @@ int main() {
         Process(*shape);
     }
 
-    // Освобождение памяти
     for (auto& shape : shapes) {
         delete shape;
     }
