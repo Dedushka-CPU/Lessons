@@ -1,93 +1,159 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <array>
-#include <bits/std_function.h>
+#include <cmath>
 
 using std::cout;
-using std::cin;
-class Shape{
-private:
+
+class Shape {
 public:
-    virtual ~Shape(){cout<<"Deleted\n";}
-    virtual void Draw(){};
+    virtual ~Shape() { cout << "Shape deleted\n"; }
+    virtual void Draw() const = 0; 
 };
-class Treugolnik:public Shape {
+
+class Polygon : public Shape {
 protected:
-    std::array<double,3> gradus;
-    std::vector<double> storoni;
+    int numSides;
+
 public:
-    Treugolnik(const int u1,const int u2,const int u3) {
-        if(CheckGradus(u1,u2,u3)==false) {
-            cout<<"Ne pravilno\n";
-
-        }else {
-            gradus[0]=u1;
-            gradus[1]=u2;
-            gradus[2]=u3;
-        }
-
-    }
-    bool CheckGradus(int a,int b,int c) {
-        if(a<0 || b<0 || c<0) {
-            return false;
-        }
-        if(a+b+c!=180) {
-            return false;
-        }
-        return true;
-    }
-    void draw(){
-        cout<<"Gradus:"<<gradus[0]<<" "<<gradus[1]<<" "<<gradus[2]<<"\n";
-        //cout<<"Storoni:"<<storoni[0]<<" "<<storoni[1]<<" "<<storoni[2]<<"\n";
-    }
+    Polygon(int sides) : numSides(sides) {}
+    virtual void Draw() const override = 0; 
 };
 
-class Square:public Shape {
+class Triangle : public Polygon {
 protected:
-    int x;
+    std::array<double, 3> angles;
+
 public:
-    Square(const int y) {
-        x=y;
+    Triangle(int a1, int a2, int a3) : Polygon(3) {
+        if (!CheckAngles(a1, a2, a3)) {
+            cout << "Неправильные углы\n";
+        } else {
+            angles[0] = a1;
+            angles[1] = a2;
+            angles[2] = a3;
+        }
     }
-    void draw(){
-        cout<<"S="<<x*x<<"\n";
+
+    bool CheckAngles(int a, int b, int c) const {
+        return (a > 0 && b > 0 && c > 0 && a + b + c == 180);
     }
-};
-class Cicle:public Shape {
-protected:
-    int pos_x;
-    int pos_y;
-    int radius;
-public:
-    Cicle(const int x,const int y,const int r) {
-        pos_x=x;
-        pos_y=y;
-        radius=r;
-    };
-    void draw() {
-        cout<<"Circle("<<pos_x<<","<<pos_y<<") radius:"<<radius<<"\n";
+
+    void Draw() const override {
+        cout << "Треугольник с углами: " << angles[0] << ", " << angles[1] << ", " << angles[2] << "\n";
     }
 };
 
-void Procces(const Shape& a){
-    a.Draw();
+class Square : public Polygon {
+protected:
+    int sideLength;
+
+public:
+    Square(int length) : Polygon(4), sideLength(length) {}
+
+    void Draw() const override {
+        cout << "Квадрат с площадью: " << sideLength * sideLength << "\n";
+    }
+};
+
+class Rectangle : public Polygon {
+protected:
+    int width;
+    int height;
+
+public:
+    Rectangle(int w, int h) : Polygon(4), width(w), height(h) {}
+
+    void Draw() const override {
+        cout << "Прямоугольник с размерами: " << width << " x " << height << " и площадью: " << width * height << "\n";
+    }
+};
+
+class Pentagon : public Polygon {
+protected:
+    int sideLength;
+
+public:
+    Pentagon(int length) : Polygon(5), sideLength(length) {}
+
+    void Draw() const override {
+        double area = (sqrt(5 * (5 + 2 * sqrt(5))) * sideLength * sideLength) / 4;
+        cout << "Правильный пятиугольник с длиной стороны: " << sideLength << " и площадью: " << area << "\n";
+    }
+};
+
+class Hexagon : public Polygon {
+protected:
+    int sideLength;
+
+public:
+    Hexagon(int length) : Polygon(6), sideLength(length) {}
+
+    void Draw() const override {
+        double area = (3 * sqrt(3) * sideLength * sideLength) / 2;
+        cout << "Правильный шестиугольник с длиной стороны: " << sideLength << " и площадью: " << area << "\n";
+    }
+};
+
+class Ellipse : public Shape {
+protected:
+    int posX;
+    int posY;
+    int radiusX;
+    int radiusY;
+
+public:
+    Ellipse(int x, int y, int rx, int ry) : posX(x), posY(y), radiusX(rx), radiusY(ry) {}
+
+    void Draw() const override {
+        cout << "Эллипс с центром в (" << posX << ", " << posY << ") и радиусами: " << radiusX << ", " << radiusY << "\n";
+    }
+};
+
+class Circle : public Ellipse {
+public:
+    Circle(int x, int y, int r) : Ellipse(x, y, r, r) {}
+
+    void Draw() const override {
+        cout << "Круг с центром в (" << posX << ", " << posY << ") и радиусом: " << radiusX << "\n";
+    }
+};
+
+class Oval : public Ellipse {
+protected:
+    int minorRadius;
+
+public:
+    Oval(int x, int y, int major, int minor) : Ellipse(x, y, major, major), minorRadius(minor) {}
+
+    void Draw() const override {
+        cout << "Овал с центром в (" << posX << ", " << posY << ") и радиусами: " << radiusX << " и " << minorRadius << "\n";
+    }
+};
+
+void Process(const Shape& shape) {
+    shape.Draw();
 }
 
-int main()
-{
-  /*  Treugolnik t(90,30,60);
-    t.draw();
-    Cicle c(0,0,5);
-    c.draw();
-    Square s(19);
-    s.draw();*/
-    std::vector<Shape*> figure;
-    figure.push_back(new Treugolnik(90,30,60));
-    figure.push_back(new Cicle (0,0,5));
-    figure.push_back(new Square (10));
-    Procces(*figure[0]);
-    Procces(*figure[1]);
-    Procces(*figure[2]);
+int main() {
+    std::vector<Shape*> shapes;
+    shapes.push_back(new Triangle(90, 30, 60));
+    shapes.push_back(new Circle(0, 0, 5));
+    shapes.push_back(new Square(10));
+    shapes.push_back(new Rectangle(10, 5));
+    shapes.push_back(new Pentagon(7));
+    shapes.push_back(new Hexagon(6));
+    shapes.push_back(new Ellipse(0, 0, 5, 3));
+    shapes.push_back(new Oval(0, 0, 7, 4));
+
+    for (const auto& shape : shapes) {
+        Process(*shape);
+    }
+
+    // Освобождение памяти
+    for (auto& shape : shapes) {
+        delete shape;
+    }
+
     return 0;
 }
